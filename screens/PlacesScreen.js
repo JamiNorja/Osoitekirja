@@ -87,8 +87,8 @@ export default function PlacesScreen({ navigation, route }) {
     }, [route.params?.fullAddress]);
 
     const renderItem = ({ item }) => {
-        const wholeAddress = item.address.split(' '); // Split the address by space
-        const streetNumber = wholeAddress[0]; // Get the first part (the street number)
+        const wholeAddress = item.address.split(' ');
+        const streetNumber = wholeAddress[0]; 
         const streetName = wholeAddress[1];
         const area = wholeAddress[2];
       
