@@ -24,7 +24,7 @@ export default function PlacesScreen({ navigation, route }) {
     };
 
     const savePlace = (address) => {
-        console.log('sacePlace', address);
+        console.log('savePlace', address);
         db.transaction(
             tx => {
                 tx.executeSql('insert into places (address) values (?);', [address]);
@@ -86,24 +86,35 @@ export default function PlacesScreen({ navigation, route }) {
         }
     }, [route.params?.fullAddress]);
 
-    const renderItem = ({ item }) => (
-        <ListItem
+    const renderItem = ({ item }) => {
+        const wholeAddress = item.address.split(' '); // Split the address by space
+        const streetNumber = wholeAddress[0]; // Get the first part (the street number)
+        const streetName = wholeAddress[1];
+        const area = wholeAddress[2];
+      
+        return (
+          <ListItem
             bottomDivider
             topDivider
-            onPress = {() => navigation.navigate('Map', { address: item.address })}
-            onLongPress = {() => confirmDelete(item.id)} >
-            <ListItem.Content style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
-                <ListItem.Title numberOfLines={1} style={{ flex: 1 }}>{item.address}</ListItem.Title>
-                <ListItem.Subtitle right >Show on map</ListItem.Subtitle>
+            onPress={() => navigation.navigate('Map', { address: item.address })}
+            onLongPress={() => confirmDelete(item.id)}
+          >
+            <ListItem.Content style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <ListItem.Title numberOfLines={1} style={{ flex: 1 }}>
+                {streetName} {streetNumber}, {area}
+              </ListItem.Title>
+              <ListItem.Subtitle right>Show on map</ListItem.Subtitle>
             </ListItem.Content>
             <ListItem.Chevron />
-        </ListItem>
-    )
+          </ListItem>
+        );
+      };
+      
 
   return (
     <View style={styles.container}>
         <View style={styles.inputs}>
-            <Input label='Placefinder' onChangeText={text => setLocation(text)} value={location} placeHolder='Enter address' />
+            <Input label='Placefinder' onChangeText={text => setLocation(text)} value={location} placeholder='Type in address' />
             <Button title='Show on map' onPress={() => {
                 if(location.trim()) {
                     navigation.navigate('Map', { address: location });

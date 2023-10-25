@@ -31,7 +31,7 @@ export default function MapScreen({ route, navigation }) {
 
             const { lat, lng } = location.latLng;
             setRegion({ ...region, latitude: lat, longitude: lng });
-            setFullAddress(`${location.street} ${location.adminArea6} ${location.adminArea5}`);
+            setFullAddress(`${location.street} ${location.adminArea5}`);
         } catch (error) {
             console.log('API call failed. Did you provide a valid API key?', error.message);
         }
